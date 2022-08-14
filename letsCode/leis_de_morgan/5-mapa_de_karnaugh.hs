@@ -1,0 +1,2 @@
+-- Mapa de Karnaugh
+-- Representa expressões booleanas de uma forma algébrica
