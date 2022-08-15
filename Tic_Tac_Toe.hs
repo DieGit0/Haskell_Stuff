@@ -26,8 +26,8 @@ getString str = do
 playerExists :: Players -> Name -> Bool
 playerExists [] _ = False
 playerExists ((Player n p):xs) name
-                                | name == n = True
-                                | otherwise = playerExists xs name
+                             | name == n = True
+                             | otherwise = playerExists xs name
 
 playerReg :: Players -> IO Players
 playerReg ps = do
@@ -37,11 +37,11 @@ playerReg ps = do
                 name <- getLine
                 if playerExists ps name
                 then  do
-                       putStrLn "This name already exist, pls choose other one"
+                       putStrLn "This name already exist, pls choose onother one"
                        system "pause"
                        menu ps
                 else  do
-                       file <- openFile "_game.txt" WriteMode
+                       file <- openFile "game.txt" WriteMode
                        hPrint file (Player name 0:ps)
                        hClose file
                        putStrLn ("User " ++ name ++ " registered successfully")
@@ -51,24 +51,23 @@ playerReg ps = do
 loadGame :: Players -> IO Players
 loadGame ps = do
                 np1 <- getString "Type the player one name: "
-                putStrLn ("p1 " ++ np1)
+--                putStrLn ("p1 " ++ np1)
                 if not (playerExists ps np1) then do
-                   putStrLn "This player doesnt exist!"
-                   putStrLn ("p1_if " ++ show np1)
+                   putStrLn "This player doesn't exist!"
+--                   putStrLn ("p1_if " ++ show np1)
                    system "pause"
                    menu ps
                 else do
                    putStr "Type the second player's name: "
                    np2 <- getLine
                    --np2 <- getString "Type the second player's name: "
-                   putStrLn ("p2 " ++ np2)
+--                   putStrLn ("p2 " ++ np2)
                    if not (playerExists ps np2) then do
-                      putStrLn "The second player doesnt exist!"
+                      putStrLn "The second player doesn't exist!"
                       system "pause"
                       menu ps
                     else
                          newGame ps np1 np2
-
 
 newGame :: Players -> Name -> Name -> IO Players
 newGame ps p1 p2 = do
@@ -80,50 +79,59 @@ newGame ps p1 p2 = do
                      runGame ps ['1', '2', '3', '4', '5', '6', '7', '8', '9'] p1 p2 0
 
 playerWin1 :: Table -> Bool
-playerWin1 tabela
+playerWin1 table
         -- verifica primeiro nas linhas
-        | (((tabela !! 0) == 'X') && ((tabela !! 1) == 'X') && ((tabela !! 2) == 'X')) = True
-        | (((tabela !! 3) == 'X') && ((tabela !! 4) == 'X') && ((tabela !! 5) == 'X')) = True
-        | (((tabela !! 6) == 'X') && ((tabela !! 7) == 'X') && ((tabela !! 8) == 'X')) = True
+        | (((table !! 0) == 'X') && ((table !! 1) == 'X') && ((table !! 2) == 'X')) = True
+        | (((table !! 3) == 'X') && ((table !! 4) == 'X') && ((table !! 5) == 'X')) = True
+        | (((table !! 6) == 'X') && ((table !! 7) == 'X') && ((table !! 8) == 'X')) = True
         -- verifica nas colunas
-        | (((tabela !! 0) == 'X') && ((tabela !! 3) == 'X') && ((tabela !! 6) == 'X')) = True
-        | (((tabela !! 1) == 'X') && ((tabela !! 4) == 'X') && ((tabela !! 7) == 'X')) = True
-        | (((tabela !! 2) == 'X') && ((tabela !! 5) == 'X') && ((tabela !! 8) == 'X')) = True
+        | (((table !! 0) == 'X') && ((table !! 3) == 'X') && ((table !! 6) == 'X')) = True
+        | (((table !! 1) == 'X') && ((table !! 4) == 'X') && ((table !! 7) == 'X')) = True
+        | (((table !! 2) == 'X') && ((table !! 5) == 'X') && ((table !! 8) == 'X')) = True
         -- verifica nas diagonais
-        | (((tabela !! 0) == 'X') && ((tabela !! 4) == 'X') && ((tabela !! 8) == 'X')) = True
-        | (((tabela !! 2) == 'X') && ((tabela !! 4) == 'X') && ((tabela !! 6) == 'X')) = True
+        | (((table !! 0) == 'X') && ((table !! 4) == 'X') && ((table !! 8) == 'X')) = True
+        | (((table !! 2) == 'X') && ((table !! 4) == 'X') && ((table !! 6) == 'X')) = True
         | otherwise = False
 
 playerWin2 :: Table -> Bool
-playerWin2 tabela
+playerWin2 table
         -- verifica primeiro nas linhas, atenção: o índice começa do 0
-        | (((tabela !! 0) == 'O') && ((tabela !! 1) == 'O') && ((tabela !! 2) == 'O')) = True
-        | (((tabela !! 3) == 'O') && ((tabela !! 4) == 'O') && ((tabela !! 5) == 'O')) = True
-        | (((tabela !! 6) == 'O') && ((tabela !! 7) == 'O') && ((tabela !! 8) == 'O')) = True
+        | (((table !! 0) == 'O') && ((table !! 1) == 'O') && ((table !! 2) == 'O')) = True
+        | (((table !! 3) == 'O') && ((table !! 4) == 'O') && ((table !! 5) == 'O')) = True
+        | (((table !! 6) == 'O') && ((table !! 7) == 'O') && ((table !! 8) == 'O')) = True
         -- verifica nas colunas
-        | (((tabela !! 0) == 'O') && ((tabela !! 3) == 'O') && ((tabela !! 6) == 'O')) = True
-        | (((tabela !! 1) == 'O') && ((tabela !! 4) == 'O') && ((tabela !! 7) == 'O')) = True
-        | (((tabela !! 2) == 'O') && ((tabela !! 5) == 'O') && ((tabela !! 8) == 'O')) = True
+        | (((table !! 0) == 'O') && ((table !! 3) == 'O') && ((table !! 6) == 'O')) = True
+        | (((table !! 1) == 'O') && ((table !! 4) == 'O') && ((table !! 7) == 'O')) = True
+        | (((table !! 2) == 'O') && ((table !! 5) == 'O') && ((table !! 8) == 'O')) = True
         -- verifica nas diagonais
-        | (((tabela !! 0) == 'O') && ((tabela !! 4) == 'O') && ((tabela !! 8) == 'O')) = True
-        | (((tabela !! 2) == 'O') && ((tabela !! 4) == 'O') && ((tabela !! 6) == 'O')) = True
+        | (((table !! 0) == 'O') && ((table !! 4) == 'O') && ((table !! 8) == 'O')) = True
+        | (((table !! 2) == 'O') && ((table !! 4) == 'O') && ((table !! 6) == 'O')) = True
         | otherwise = False
 
 -- função que atualiza pontuação do vencedor
 -- recebe a lista (Jogadores), o nome do vencedor e retorna uma nova lista atualizada
 updatePontuation :: Players -> String -> Players
 updatePontuation ((Player nm pt):xs) winner
-                                  | (nm == winner) = [(Player nm (pt + 1))] ++ xs
-                                  | otherwise = (Player nm pt):(updatePontuation xs winner)
+                               | (nm == winner) = [(Player nm (pt + 1))] ++ xs
+                               | otherwise = (Player nm pt):(updatePontuation xs winner)
 
 -- exibir ranking dos jogadores
 -- critério: da maior para a menor pontuação
 listRanking :: Players -> IO ()
 listRanking [] = return ()
 listRanking (x:xs) = do
-                     putStrLn ((getName x) ++ " possui " ++ (show (getPontuation x)) ++ " pontos")
-                     listRanking xs
-    
+                     --putStrLn ((getName x) ++ " has " ++ (show (getPontuation x)) ++ " points")
+                    putStrLn ( nm ++ "has " ++ (show (getPontuation x)) ++ " points")
+                    listRanking xs
+                     where
+                          --space10 = "          "
+                          --lspace = length space10
+                          lname  = length (getName x)
+                          ll = 10 - lname
+                          space = [ " " | sp <- [1..ll]]
+                          --foldl (\b a -> b ++ a) "Diego" [" ", " ", ""]
+                          nm = foldl (++) (getName x) space
+
 -- função que recebe um jogador e retorna o nome
 getName :: Player -> Name
 getName (Player nome _) = nome
@@ -131,7 +139,6 @@ getName (Player nome _) = nome
 -- função que recebe um Player e retorna a pontuação
 getPontuation :: Player -> Pontuation
 getPontuation (Player _ pontuacao) = pontuacao
-
 
 -- função que define o critério de ordenação
 ordenar :: Players -> Players
@@ -160,39 +167,39 @@ runGame ps tb n1 n2 tu = do
         putStrLn ("Congratulations " ++ n1 ++ "! you win!!")
 -- ** passar pro ingles **
         -- abre o arquivo para escrita para atualizá-lo
-        arq_escrita <- openFile "_game.txt" WriteMode
+        arq_escrita <- openFile "game.txt" WriteMode
         hPutStrLn arq_escrita (show (updatePontuation ps n1))
         hClose arq_escrita
 
         -- abre o arquivo para leitura
-        arq_leitura <- openFile "_game.txt" ReadMode
+        arq_leitura <- openFile "game.txt" ReadMode
         dados_atualizados <- hGetLine arq_leitura
         hClose arq_leitura
-
-        putStr "\nPressione <Enter> para voltar ao menu..."
+        system "pause"
+        --putStr "\nPressione <Enter> para voltar ao menu..."
         getChar
         menu (read dados_atualizados)
     else do
         -- verifica se o jogador2 venceu
         if (playerWin2 tb) then do
-            putStrLn ("Parábens " ++ n2 ++ "! Você venceu!!")
+            putStrLn ("Congratulations " ++ n2 ++ "! You Win!!")
 
             -- abre o arquivo para escrita para atualizá-lo
-            arq_escrita <- openFile "dados.txt" WriteMode
+            arq_escrita <- openFile "game.txt" WriteMode
             hPutStrLn arq_escrita (show (updatePontuation ps n2))
             hClose arq_escrita
 
             -- abre o arquivo para leitura
-            arq_leitura <- openFile "dados.txt" ReadMode
+            arq_leitura <- openFile "game.txt" ReadMode
             dados_atualizados <- hGetLine arq_leitura
             hClose arq_leitura
-
-            putStr "\nPressione <Enter> para voltar ao menu..."
+            system "pause"
+            --putStr "\nPressione <Enter> para voltar ao menu..."
             getChar
             menu (read dados_atualizados)
         else do
             -- verifica se houve empate
-            -- se o tamanho da intersecção entre "123456789" e "tabela" for 0, então deu empate
+            -- se o tamanho da intersecção entre "123456789" e "table" for 0, então deu empate
             if ((length (intersect "123456789" tb)) == 0) then do
                 putStrLn ("Deu empate!")
                 putStr "\nPressione <Enter> para voltar ao menu..."
@@ -212,14 +219,14 @@ runGame ps tb n1 n2 tu = do
                     else
                         -- se caiu aqui, então é uma opção válida
                         -- testa se a opção já foi marcada
-                        -- se ela não existir na tabela, é porque já foi marcada
+                        -- se ela não existir na table, é porque já foi marcada
                         if not (elem op tb) then do
                             putStrLn "\nEssa opção já foi marcada, escolha outra opção..."
                             runGame ps tb n1 n2 0
                         else
                             -- se caiu aqui é porque a opção é válida e ainda NÃO foi marcada
                             -- passa 1 para indicar que a vez é do jogador2
-                            -- a nova tabela será o retorno da função getNewTab
+                            -- a nova table será o retorno da função getNewTab
                             runGame ps (getNewTab tb tu op) n1 n2 1
                 else do
                     putStr (n2 ++ ", é a sua vez! Onde você quer marcar?")
@@ -236,7 +243,7 @@ runGame ps tb n1 n2 tu = do
                         else
                             -- se caiu aqui é porque a opção é válida e ainda NÃO foi marcada
                             -- passa 0 para indicar que a vez é do jogador1
-                            -- a nova tabela será o retorno da função getNewTab
+                            -- a nova table será o retorno da função getNewTab
                             runGame ps (getNewTab tb tu op) n1 n2 0
 
 start :: IO ()
@@ -244,7 +251,7 @@ start  = catch read_file handler
     where
         read_file = do
         {
-            file  <- openFile "_game.txt" ReadMode;
+            file  <- openFile "game.txt" ReadMode;
             data_ <- hGetLine file;
             hClose file;
             menu (read data_ :: Players);
@@ -253,7 +260,7 @@ start  = catch read_file handler
         handler error = if isDoesNotExistError error
         then do
         {
-            file <- openFile "_game.txt" WriteMode;
+            file <- openFile "game.txt" WriteMode;
             hPutStrLn file "[]";
             putStrLn "Error";
             hClose file;
@@ -283,24 +290,26 @@ execOpc da '1' = do
 execOpc da '2' = do
                   playerReg da
 execOpc da '3' = do
-                 putStrLn "\nRanking dos jogadores:\n"
+                 putStrLn "\nRanking:\n"
                  if (null da) then do
-                    putStrLn ("Não há jogadores cadastrados!")
+                    putStrLn ("** There are no registered players! **\n")
                  else
                     -- a função ordenar ordena crescentemente pela pontuação
                     listRanking (reverse (ordenar da))
-                 putStr "\nPressione <Enter> para voltar ao menu..."
+                 system "pause"
+                 --putStr "\nPressione <Enter> para voltar ao menu..."
                  getChar
                  menu da
 execOpc da '0' = do
-                  putStrLn "Bye bye"
+                  putStrLn "Bye-bye!"
+                  system "cls"
                   getChar
                   return da
 execOpc da  _  = do
                   putStrLn "Invalid option\n"
-                  putStr   "press <Enter> to return the menu..."
-                  --system "pause"
-                  _ <- getChar
+                  --putStr   "press <Enter> to return the menu..."
+                  system "pause"
+                  getChar
                   menu da
 
 main :: IO ()
